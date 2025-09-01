@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-const Toaster = ({ message, onClose }) => {
+const Toaster = ({ message, type = 'default', onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Toaster = ({ message, onClose }) => {
       role="status"
       aria-live="assertive"
     >
-      <div className="toast">{message}</div>
+      <div className={`toast ${type}`}>{message}</div>
     </div>
   );
 };

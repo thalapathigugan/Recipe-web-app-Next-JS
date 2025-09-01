@@ -6,7 +6,7 @@
  *  searchTerm?: string,
  *  setSearchTerm?: (v: string) => void,
  *  currentCategory?: string,
- *  setCurrentCategory?: (v: string) => void,
+ *  setCurrentCategory?: (v) => void,
  *  categories?: any[],
  *  placeholder?: string,
  * }} props
@@ -37,7 +37,9 @@ const SearchBar = ({
             placeholder={placeholder}
           />
         </div>
-        <button type="submit">Search</button>
+        <button type="submit">
+          <span className="material-symbols-outlined">search</span>
+        </button>
       </form>
 
       <div className="categories-container">

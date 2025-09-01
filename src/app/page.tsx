@@ -35,21 +35,21 @@ function App() {
   });
   const [currentPage, setCurrentPage] = useState<number>(() => getLocal('recipe_current_page', 1));
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [toastMsg, setToastMsg] = useState<{ message: string; type: string } | null>(null);
   const [toastKey, setToastKey] = useState(0);
   const [homeRecipes, setHomeRecipes] = useState<Recipe[]>([]);
   const [isLoadingHome, setIsLoadingHome] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   // Helper function to show toast messages with proper reset
-  const showToast = (message: string) => {
+  const showToast = (message: string, type: string = 'default') => {
     // First clear any existing toast
     setToastMsg(null);
     setToastKey(prev => prev + 1);
 
     // Then show the new toast after a brief delay
     setTimeout(() => {
-      setToastMsg(message);
+      setToastMsg({ message, type });
     }, 10);
   };
 
@@ -195,8 +195,9 @@ function App() {
     setFavorites(prev => {
       const exists = prev.some(r => r.idMeal === recipe.idMeal);
       const message = exists ? 'Removed from Favorites' : 'Added to Favorites';
+      const type = exists ? 'danger' : 'success';
 
-      showToast(message);
+      showToast(message, type);
 
       if (exists) return prev.filter(r => r.idMeal !== recipe.idMeal);
       return [...prev, recipe];
@@ -209,7 +210,7 @@ function App() {
       return { ...prev, [recipe.idMeal]: { recipe, qty } };
     });
 
-    showToast('Added to Cart');
+    showToast('Added to Cart', 'success');
   };
 
   const handleCartRemove = (recipe: Recipe) => {
@@ -220,7 +221,7 @@ function App() {
       return rest;
     });
 
-    showToast('Removed from Cart');
+    showToast('Removed from Cart', 'danger');
   };
 
   const handleViewRecipe = async (recipe: Recipe) => {
@@ -433,7 +434,8 @@ function App() {
         {toastMsg && (
           <Toaster 
             key={toastKey} 
-            message={toastMsg} 
+            message={toastMsg.message} 
+            type={toastMsg.type} 
             onClose={hideToast} 
           />
         )}
