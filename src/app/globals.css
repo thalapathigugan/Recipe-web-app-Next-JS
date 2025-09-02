@@ -89,7 +89,7 @@ header nav form{
 .search-bar{
   display: flex;
   align-items: center;
-  border: 2px solid #46c0f1;
+  border: 2px solid #626465ab;
   border-radius: 12px;
 }
 
@@ -111,6 +111,7 @@ header nav form{
   color: #23406e;
   font-size: 16px;
   transition: all 0.2s;
+  border-right: 1px solid rgba(128, 128, 128, 0.669);
   /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
 }
 .search-box:focus {
