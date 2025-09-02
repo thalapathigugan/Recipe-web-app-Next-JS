@@ -12,6 +12,7 @@ import { Category, Recipe } from './types';
 import ContextualSearchManager from './utils/ContextualSearchManager';
 import HomePageRecipeManager from './utils/HomePageRecipeManager';
 import { getLocal, setLocal } from './utils/localStorage';
+import { useScrollLock } from './components/useScrollLock';
 
 const RECIPES_PER_PAGE = 20;
 const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
@@ -183,6 +184,8 @@ function App() {
   useEffect(() => { setLocal('favorites', favorites); }, [favorites]);
   useEffect(() => { setLocal('cart', cart); }, [cart]);
 
+  useScrollLock(!!selectedRecipe);
+
   // Pagination logic - use filteredRecipes
   const paginatedRecipes: Recipe[] = filteredRecipes.slice(
     (currentPage - 1) * RECIPES_PER_PAGE,
@@ -348,9 +351,9 @@ function App() {
             />
             {/* Show search results info */}
             {searchTerm && !displayMessage && (
-              <div className="search-results-message" style={{ 
-                padding: '10px 20px', 
-                fontSize: '14px', 
+              <div className="search-results-message" style={{
+                padding: '10px 20px',
+                fontSize: '14px',
                 color: '#666',
                 borderBottom: '1px solid #eee',
                 backgroundColor: 'transparent'
@@ -363,10 +366,10 @@ function App() {
 
         {/* Show loading, no results, or recipe list */}
         {displayMessage ? (
-          <div style={{ 
-            padding: '40px 20px', 
-            textAlign: 'center', 
-            fontSize: '16px', 
+          <div style={{
+            padding: '40px 20px',
+            textAlign: 'center',
+            fontSize: '16px',
             color: displayMessage.type === 'loading' ? '#666' : '#e74c3c'
           }}>
             <div style={{ marginBottom: displayMessage.showClearButton ? '20px' : '0' }}>
@@ -374,14 +377,14 @@ function App() {
             </div>
             {displayMessage.showClearButton && (
               <div>
-                <button 
+                <button
                   onClick={() => setSearchTerm('')}
-                  style={{ 
-                    padding: '10px 20px', 
-                    backgroundColor: '#3498db', 
-                    color: 'white', 
-                    border: 'none', 
-                    borderRadius: '6px', 
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#3498db',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
                     cursor: 'pointer',
                     fontSize: '14px',
                     fontWeight: '500'
@@ -392,10 +395,10 @@ function App() {
                   Clear Search
                 </button>
                 {currentCategory && (
-                  <div style={{ 
-                    marginTop: '10px', 
-                    fontSize: '12px', 
-                    color: '#7f8c8d' 
+                  <div style={{
+                    marginTop: '10px',
+                    fontSize: '12px',
+                    color: '#7f8c8d'
                   }}>
                     Try a different search term or clear the search to see all {currentCategory} recipes.
                   </div>
@@ -432,11 +435,11 @@ function App() {
 
         {/* Render Toaster only when there's a message */}
         {toastMsg && (
-          <Toaster 
-            key={toastKey} 
-            message={toastMsg.message} 
-            type={toastMsg.type} 
-            onClose={hideToast} 
+          <Toaster
+            key={toastKey}
+            message={toastMsg.message}
+            type={toastMsg.type}
+            onClose={hideToast}
           />
         )}
 
