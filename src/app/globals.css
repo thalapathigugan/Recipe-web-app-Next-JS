@@ -421,6 +421,11 @@ body::-webkit-scrollbar-track{
     font-size: 11px;
     padding: 0 4px;
   }
+
+  form button[type="submit"] {
+    height: 40px ;
+  }
+
   .categories-container button,
   .categories-select,
   .category-btn {
@@ -435,6 +440,10 @@ body::-webkit-scrollbar-track{
 @media screen and (max-width: 500px) {
   .recipe-container {
     grid-template-columns: 1fr;
+  }
+
+  form button[type="submit"] {
+    height: 38px;
   }
 
   .search-box {
@@ -482,7 +491,8 @@ body::-webkit-scrollbar-track{
   }
 
   .recipe-container{
-        margin-bottom: 100px;
+    margin-bottom: 100px;
+    background-color: transparent !important;
   }
 
   header nav form{
@@ -494,6 +504,10 @@ body::-webkit-scrollbar-track{
     margin-right: 4px;
   }
 
+  .search-and-category-container{
+    padding: 0 !important;
+    background: none !important;
+  }
 
   /* .search-input-wrapper {
     width: 100% !important;
