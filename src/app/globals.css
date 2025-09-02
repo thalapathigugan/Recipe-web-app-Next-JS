@@ -366,9 +366,31 @@ form button[type="submit"]{
   text-decoration: none;
   margin-bottom: 24px;
   color: #33415c;
-  background-image: linear-gradient(to right, #caefd758 , #f5bfd784 , #abc9e954);
+  background-image: linear-gradient(to right, #caefd7 , #f5bfd7 , #abc9e9);
   font-weight: 800;
+  position: relative;
 }
+
+.recipeName::before,
+.recipeName::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50px; /* Adjust fade width as needed */
+  height: 100%;
+  pointer-events: none; /* Allows clicks on content underneath */
+}
+
+.recipeName::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.684), rgba(255, 255, 255, 0)); /* Fade from solid to transparent on left */
+}
+
+.recipeName::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.656), rgba(255, 255, 255, 0)); /* Fade from solid to transparent on right */
+}
+
 
 
 .ingredientsList {
