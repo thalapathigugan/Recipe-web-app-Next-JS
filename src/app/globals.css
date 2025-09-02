@@ -351,21 +351,27 @@ form button[type="submit"]{
 
 .recipe-details-content {
   gap: 20px;
-    padding: 30px;
+}
 
+.recipe-details-content h3 {
+  margin: 2% 4%;
 }
 
 .recipeName {
+  padding-top: 20px;
   text-align: center;
   text-transform: uppercase;
+  border-radius: 0 0 12px 12px;
   text-decoration: none;
   margin-bottom: 24px;
-  color: black;
+  color: #33415c;
+  background-image: linear-gradient(to right, #caefd758 , #f5bfd784 , #abc9e954);
   font-weight: 800;
 }
 
+
 .ingredientsList {
-  margin: 12px 24px;
+  margin: 2% 8%;
 }
 
 .ingredientsList li{
@@ -375,7 +381,7 @@ form button[type="submit"]{
 }
 
 .recipeInstructions {
-  margin: 12px 24px;
+  margin: 2% 6%;
   font-size: 16px;
   line-height: 140%;
 }
@@ -575,8 +581,6 @@ body::-webkit-scrollbar-track{
 
 body h2 {
   text-align: center;
-  margin: 20px auto;
-  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 60px;
