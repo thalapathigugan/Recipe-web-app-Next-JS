@@ -57,7 +57,7 @@ header nav{
   object-fit: contain;
   /* margin-right: 6px; */
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(179,216,253,0.10);
+  /* box-shadow: 0 2px 8px rgba(179,216,253,0.10); */
   display: inline-block;
   vertical-align: middle;
 }
@@ -290,9 +290,20 @@ form button[type="submit"]{
   left:50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
-  background-size: 100% 100%;
-  background-position: 0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px;
-  background-image: radial-gradient(18% 28% at 24% 50%, #CEFAFFFF 7%, #073AFF00 100%),radial-gradient(18% 28% at 18% 71%, #FFFFFF59 6%, #073AFF00 100%),radial-gradient(70% 53% at 36% 76%, #73F2FFFF 0%, #073AFF00 100%),radial-gradient(42% 53% at 15% 94%, #FFFFFFFF 7%, #073AFF00 100%),radial-gradient(42% 53% at 34% 72%, #FFFFFFFF 7%, #073AFF00 100%),radial-gradient(18% 28% at 35% 87%, #FFFFFFFF 7%, #073AFF00 100%),radial-gradient(31% 43% at 7% 98%, #FFFFFFFF 24%, #073AFF00 100%),radial-gradient(21% 37% at 72% 23%, #6bd2eec3 24%, #073AFF00 100%),radial-gradient(35% 56% at 91% 74%, #A4D7FDFF 9%, #073AFF00 100%),radial-gradient(74% 86% at 67% 38%, #f8e5b0dd 24%, #073AFF00 100%),linear-gradient(148deg, #8EC2E8FF 16%, rgb(220, 142, 232) 27%, rgb(172, 0, 252) 64%, rgb(205, 142, 232) 90%, rgb(208, 142, 232) 91%, rgb(205, 142, 232) 94%);
+  background-position: 0px;
+  background:
+  radial-gradient(22% 35% at 50% 30%, #fff5e9 10%, #ffffff00 80%),
+  radial-gradient(25% 30% at 23% 55%, #cee2ff 0%, #ffffff00 70%),
+  radial-gradient(35% 40% at 76% 38%, #fbc6c9 10%, #ffffff00 90%),
+  radial-gradient(42% 53% at 65% 80%, #afa5d2 0%, #ffffff00 90%),
+  radial-gradient(42% 53% at 18% 90%, #8ec4dc 0%, #ffffff00 100%),
+  radial-gradient(23% 23% at 30% 80%, #aea8ff 0%, #ffffff00 90%),
+  radial-gradient(31% 43% at 10% 98%, #b4c8ff 0%, #ffffff00 80%),
+  radial-gradient(21% 37% at 82% 65%, #ffb8eb 20%, #ffffff00 80%),
+  linear-gradient(145deg, #ffcee7 10%, #bbe8eb 50%, #9db7ff 100%);
+
+  /* Make the background significantly larger than the container */
+  background-size: 400% 400%;
   border: 2px solid #b3d8fd;
   border-radius: 18px;
   width: 80%;
@@ -301,9 +312,38 @@ form button[type="submit"]{
   font-size: 20px;
   transition: all 0.5s ease-in-out;
   overflow-y: scroll;
-  color: #23406e;
+  color: black;
   box-shadow: 0px 0px 80px 10px rgb(182, 182, 182);
+  animation: moveBackground 20s ease-in-out infinite alternate;
 }
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  40% {
+    background-position: 75% 25%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  60% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  90% {
+    background-position: 25% 75%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
 
 .recipe-details-content::-webkit-scrollbar{
   width: 0;
@@ -320,7 +360,7 @@ form button[type="submit"]{
   text-transform: uppercase;
   text-decoration: none;
   margin-bottom: 24px;
-  color: #3B4371;
+  color: black;
   font-weight: 800;
 }
 
@@ -329,7 +369,7 @@ form button[type="submit"]{
 }
 
 .ingredientsList li{
-  color: #23406e;
+  color: black;
   font-size: 16px;
   line-height: 140%;
 }
