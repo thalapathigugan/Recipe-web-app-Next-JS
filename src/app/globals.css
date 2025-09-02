@@ -111,7 +111,7 @@ header nav form{
   color: #23406e;
   font-size: 16px;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.05); */
 }
 .search-box:focus {
   outline: none;
