@@ -1,4 +1,6 @@
 "use client";
+import { useState, useEffect, useRef } from 'react';
+
 
 
 /**
@@ -19,6 +21,27 @@ const SearchBar = ({
   categories = [],
   placeholder = 'Search recipes...'
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownContainerRef = useRef(null);
+
+  // This closes the dropdown when you click outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownContainerRef.current && !dropdownContainerRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelectCategory = (categoryValue) => {
+    setCurrentCategory(categoryValue);
+    setIsDropdownOpen(false); // Close dropdown after selection
+  };
+
+  const selectedCategoryName =
+    categories.find(c => c.strCategory === currentCategory)?.strCategory || 'All Categories';
   const handleSubmit = (e) => {
     e.preventDefault();
     setSearchTerm(searchTerm);
@@ -42,19 +65,62 @@ const SearchBar = ({
         </button>
       </form>
 
-      <div className="categories-container">
-        <select
-          className="categories-select"
-          value={currentCategory || ''}
-          onChange={(e) => setCurrentCategory(e.target.value || '__all__')}
+      {/* Custom Category Dropdown */}
+      <div className="categories-container" ref={dropdownContainerRef} style={{ position: 'relative' }}>
+        <button
+          type="button" // Important: prevents form submission
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          style={{
+            cursor: 'pointer',
+            padding: '14px 15px',
+            backgroundColor: '#f0f0f0',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            width: '200px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
-          <option value="__all__">All Categories</option>
-          {Array.isArray(categories) && categories.map((c) => (
-            <option key={c.idCategory || c.strCategory} value={c.strCategory}>
-              {c.strCategory}
-            </option>
-          ))}
-        </select>
+          <span>{selectedCategoryName}</span>
+          <span style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
+        </button>
+        {/* Dropdown options list */}
+        {isDropdownOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '105%', // Positioned just below the button
+            left: 0,
+            right: 0,
+            backgroundColor: 'white',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            zIndex: 10,
+            maxHeight: '400px',
+            overflowY: 'auto'
+          }}>
+            <div
+              onClick={() => handleSelectCategory('__all__')}
+              style={{ padding: '12px 15px', cursor: 'pointer', whiteSpace: 'nowrap' }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+            >
+              All Categories
+            </div>
+            {Array.isArray(categories) && categories.map(category => (
+              <div
+                key={category.idCategory || category.strCategory}
+                onClick={() => handleSelectCategory(category.strCategory)}
+                style={{ padding: '12px 15px', cursor: 'pointer' }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+              >
+                {category.strCategory}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

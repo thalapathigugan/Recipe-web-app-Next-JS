@@ -13,25 +13,73 @@ function Header({ cart, onViewChange }: HeaderProps) {
     useEffect(() => { setMounted(true); }, []);
 
     return (
-        <header>
-        <nav className="header-nav">
-            <div className="header-logo-container">
-                        <div
-                            className="header-logo-link"
-                            style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-                            onClick={() => onViewChange('home')}
-                        >
-                                {/* Replace with your logo image path */}
-                                <Image src="/logo.png" alt="Recipe App Logo" width={68} height={68} className="header-logo" />
-                                <h1>TYSON RECIPES</h1>
-                        </div>
+        <header style={{ pointerEvents: 'auto' }}>
+        <nav className="header-nav" style={{ pointerEvents: 'auto', position: 'relative', zIndex: 10 }}>
+            <div className="header-logo-container" style={{ pointerEvents: 'auto' }}>
+                <a 
+                    className="header-logo-link" 
+                    onClick={() => onViewChange('home')} 
+                    style={{ 
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        display: 'block',
+                        position: 'relative'
+                    }}
+                    onMouseEnter={(e) => {
+                        console.log('Mouse entered logo link');
+                        e.currentTarget.style.cursor = 'pointer';
+                    }}
+                >
+                    {/* Replace with your logo image path */}
+                    <Image 
+                        src="/logo.png" 
+                        alt="Recipe App Logo" 
+                        width={68} 
+                        height={68} 
+                        className="header-logo"
+                        style={{ pointerEvents: 'none' }} // Let parent handle clicks
+                    />
+                    <h1 style={{ pointerEvents: 'none' }}>TYSON RECIPES</h1>
+                </a>
             </div>
-            <div className="nav-view-buttons">
-                <button type="button" className="view-favorites-btn" onClick={() => onViewChange('favorites')}>View Favorites</button>
-                <button type="button" className="view-cart-btn" onClick={() => onViewChange('cart')}>
+            <div className="nav-view-buttons" style={{ pointerEvents: 'auto' }}>
+                <button 
+                    type="button" 
+                    className="view-favorites-btn" 
+                    onClick={() => onViewChange('favorites')}
+                    style={{ 
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        position: 'relative'
+                    }}
+                    onMouseEnter={(e) => {
+                        console.log('Mouse entered favorites button');
+                        e.currentTarget.style.cursor = 'pointer';
+                    }}
+                >
+                    View Favorites
+                </button>
+                <button 
+                    type="button" 
+                    className="view-cart-btn" 
+                    onClick={() => onViewChange('cart')}
+                    style={{ 
+                        cursor: 'pointer',
+                        pointerEvents: 'auto',
+                        position: 'relative'
+                    }}
+                    onMouseEnter={(e) => {
+                        console.log('Mouse entered cart button');
+                        e.currentTarget.style.cursor = 'pointer';
+                    }}
+                >
                     View Cart
-                    <span className="cart-count-badge" suppressHydrationWarning>
-                        {mounted && cartCount > 0 ? cartCount : ''}
+                    <span 
+                        className="cart-count-badge" 
+                        suppressHydrationWarning
+                        style={{ pointerEvents: 'none' }} // Let parent handle clicks
+                    >
+                        {mounted && cartCount >= 0 ? cartCount : ''}
                     </span>
                 </button>
             </div>
