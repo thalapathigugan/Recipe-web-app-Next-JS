@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 
-
-
 /**
  * @param {{
  *  searchTerm?: string,
@@ -40,11 +38,19 @@ const SearchBar = ({
     setIsDropdownOpen(false); // Close dropdown after selection
   };
 
-  const selectedCategoryName =
-    categories.find(c => c.strCategory === currentCategory)?.strCategory || 'All Categories';
+  // Fixed category display logic
+  const selectedCategoryName = () => {
+    if (!currentCategory || currentCategory === '' || currentCategory === '__all__') {
+      return 'All Categories';
+    }
+    const foundCategory = categories.find(c => c.strCategory === currentCategory);
+    return foundCategory ? foundCategory.strCategory : 'All Categories';
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSearchTerm(searchTerm);
+    // Form submission is handled by the parent component through searchTerm state
+    // No need to call setSearchTerm(searchTerm) as it's redundant
   };
 
   return (
@@ -82,7 +88,7 @@ const SearchBar = ({
             alignItems: 'center',
           }}
         >
-          <span>{selectedCategoryName}</span>
+          <span>{selectedCategoryName()}</span>
           <span style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
         </button>
         {/* Dropdown options list */}
@@ -101,10 +107,15 @@ const SearchBar = ({
             overflowY: 'auto'
           }}>
             <div
-              onClick={() => handleSelectCategory('__all__')}
-              style={{ padding: '12px 15px', cursor: 'pointer', whiteSpace: 'nowrap' }}
+              onClick={() => handleSelectCategory('')} // Changed from '__all__' to empty string
+              style={{ 
+                padding: '12px 15px', 
+                cursor: 'pointer', 
+                whiteSpace: 'nowrap',
+                backgroundColor: (!currentCategory || currentCategory === '' || currentCategory === '__all__') ? '#f0f8ff' : 'white'
+              }}
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = (!currentCategory || currentCategory === '' || currentCategory === '__all__') ? '#f0f8ff' : 'white'}
             >
               All Categories
             </div>
@@ -112,9 +123,13 @@ const SearchBar = ({
               <div
                 key={category.idCategory || category.strCategory}
                 onClick={() => handleSelectCategory(category.strCategory)}
-                style={{ padding: '12px 15px', cursor: 'pointer' }}
+                style={{ 
+                  padding: '12px 15px', 
+                  cursor: 'pointer',
+                  backgroundColor: currentCategory === category.strCategory ? '#f0f8ff' : 'white'
+                }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = currentCategory === category.strCategory ? '#f0f8ff' : 'white'}
               >
                 {category.strCategory}
               </div>
