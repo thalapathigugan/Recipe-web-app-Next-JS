@@ -1,10 +1,9 @@
 "use client";
 
 // STEP 1: Imports from next/navigation are included
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Header from './components/Header';
-import MobileBottomBar from './components/MobileBottomBar';
+import { addToCart, removeFromCart } from './utils/cartManager';
 import Pagination from './components/Pagination';
 import RecipeDetailsModal from './components/RecipeDetailsModal';
 import RecipeList from './components/RecipeList';
@@ -20,12 +19,10 @@ const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
 const MIN_HOME_RECIPES = 120;
 
 function App() {
-  // STEP 2: Hooks are initialized
+  // Initialize hooks
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  // STEP 3: State initialization is updated to remove getLocal for URL-controlled state
+  // State initialization
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentView, setCurrentView] = useState<string>('home');
@@ -48,26 +45,7 @@ function App() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [toast, setToast] = useState<{ message: string; type: string; key: number } | null>(null);
 
-  // STEP 4: useEffect hooks for URL synchronization are added
-  // Syncs the URL query params TO the component's state
-  useEffect(() => {
-    setCurrentView(searchParams.get('view') || 'home');
-    setCurrentCategory(searchParams.get('category') || null);
-    setSearchTerm(searchParams.get('search') || '');
-    setCurrentPage(Number(searchParams.get('page') || 1));
-  }, [searchParams]);
 
-  // Syncs the component's state TO the URL query params
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    
-    if (currentView !== 'home') params.set('view', currentView); else params.delete('view');
-    if (currentCategory) params.set('category', currentCategory); else params.delete('category');
-    if (searchTerm) params.set('search', searchTerm); else params.delete('search');
-    if (currentPage > 1) params.set('page', String(currentPage)); else params.delete('page');
-
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [currentView, currentCategory, searchTerm, currentPage, pathname, router, searchParams]);
 
 
   const showToast = (message: string, type: string = 'default') => {
@@ -181,20 +159,14 @@ function App() {
   };
 
   const handleCartAdd = (recipe: Recipe) => {
-    setCart(prev => {
-      const qty = (prev[recipe.idMeal]?.qty || 0) + 1;
-      return { ...prev, [recipe.idMeal]: { recipe, qty } };
-    });
+    const newCart = addToCart(recipe);
+    setCart(newCart);
     showToast('Added to Cart', 'success');
   };
 
   const handleCartRemove = (recipe: Recipe) => {
-    setCart(prev => {
-      const qty = (prev[recipe.idMeal]?.qty || 0) - 1;
-      if (qty > 0) return { ...prev, [recipe.idMeal]: { recipe, qty } };
-      const { [recipe.idMeal]: omit, ...rest } = prev;
-      return rest;
-    });
+    const newCart = removeFromCart(recipe);
+    setCart(newCart);
     showToast('Removed from Cart', 'error');
   };
 
@@ -218,14 +190,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-  const handleViewChange = (view: string) => {
-    setCurrentView(view);
-    setCurrentPage(1);
-    if (view === 'home') {
-      setSearchTerm('');
-      setCurrentCategory(null);
-    }
-  };
+
 
   const handleCategoryChange = (cat: string) => {
     const newCategory = cat === '__all__' ? null : cat;
@@ -265,7 +230,6 @@ function App() {
   
   return (
     <div className="app-container">
-      <Header cart={cart} onViewChange={handleViewChange} />
       <main>
         {currentView !== 'favorites' && currentView !== 'cart' && (
           <>
@@ -341,7 +305,6 @@ function App() {
             onClose={hideToast}
           />
         )}
-        <MobileBottomBar onViewChange={handleViewChange} />
       </main>
     </div>
   );

@@ -1,16 +1,25 @@
 "use client";
 
 import React from "react";
+import { useRouter } from 'next/navigation';
 
-type MobileBottomBarProps = { onViewChange?: (view: string) => void };
+const MobileBottomBar: React.FC = () => {
+  const router = useRouter();
 
-const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onViewChange = () => {} }) => {
+  const handleNavigation = (route: string) => {
+    if (route === 'home') {
+      router.push('/');
+    } else {
+      router.push(`/${route}`);
+    }
+  };
+
   return (
     <div className="mobile-bottom-bar">
-      <button type="button" onClick={() => onViewChange('favorites')}>
+      <button type="button" onClick={() => handleNavigation('favorites')}>
         Favorites
       </button>
-      <button type="button" onClick={() => onViewChange('cart')}>
+      <button type="button" onClick={() => handleNavigation('cart')}>
         Cart
       </button>
     </div>

@@ -1,16 +1,26 @@
+import { Recipe } from '../types';
+
 type HeaderProps = {
-    cart: Record<string, { qty?: number }>;
-    onViewChange: (view: string) => void;
+    cart: Record<string, { recipe: Recipe; qty: number }>;
 };
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-function Header({ cart, onViewChange }: HeaderProps) {
-    // Calculate cart count (sum of qty for each cart item)
-    const cartCount = Object.values(cart).reduce((sum, item) => sum + (item.qty || 0), 0);
+function Header({ cart }: HeaderProps) {
+    const router = useRouter();
+    const [cartCount, setCartCount] = useState(0);
     const [mounted, setMounted] = useState(false);
-    useEffect(() => { setMounted(true); }, []);
+    
+    useEffect(() => {
+        setMounted(true);
+        
+        // Calculate cart count whenever cart prop changes
+        const count = Object.values(cart).reduce((sum, item) => sum + (item.qty || 0), 0);
+        setCartCount(count);
+        console.log('Cart count updated:', count);  // Debug log
+    }, [cart]);
 
     return (
         <header style={{ pointerEvents: 'auto' }}>
@@ -18,7 +28,10 @@ function Header({ cart, onViewChange }: HeaderProps) {
             <div className="header-logo-container" style={{ pointerEvents: 'auto' }}>
                 <a 
                     className="header-logo-link" 
-                    onClick={() => onViewChange('home')} 
+                    onClick={() => {
+                        router.push('/');
+                        router.refresh();
+                    }} 
                     style={{ 
                         cursor: 'pointer',
                         pointerEvents: 'auto',
@@ -46,7 +59,7 @@ function Header({ cart, onViewChange }: HeaderProps) {
                 <button 
                     type="button" 
                     className="view-favorites-btn" 
-                    onClick={() => onViewChange('favorites')}
+                    onClick={() => router.push('/favorites')}
                     style={{ 
                         cursor: 'pointer',
                         pointerEvents: 'auto',
@@ -62,7 +75,7 @@ function Header({ cart, onViewChange }: HeaderProps) {
                 <button 
                     type="button" 
                     className="view-cart-btn" 
-                    onClick={() => onViewChange('cart')}
+                    onClick={() => router.push('/cart')}
                     style={{ 
                         cursor: 'pointer',
                         pointerEvents: 'auto',
